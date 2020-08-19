@@ -1,0 +1,37 @@
+service: lambda-invoke
+
+plugins:
+  - serverless-offline
+
+provider:
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - lambda:InvokeAsync
+        - lambda:InvokeFunction
+      Resource: "*"
+  memorySize: 128
+  name: aws
+  region: us-east-1
+  runtime: nodejs12.x
+  stage: dev
+  versionFunctions: false
+  environment:
+    LOG_LEVEL: info
+
+functions:
+  stdLogger:
+    name: test-lambda-${self:provider.stage}
+    events:
+      - http:
+          method: get
+          path: test-handler
+    handler: dist/handler.stdLogger
+
+  otherLogger:
+    name: test-lambda2-${self:provider.stage}
+    events:
+      - http:
+          method: get
+          path: test-handler-two
+    handler: dist/handler.otherLogger
