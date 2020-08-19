@@ -4,12 +4,12 @@ export default class LambdaHandler {
 
     private logger: LoggerStructure;
     constructor(logger: LoggerStructure) {
-        this.logger = logger || new Logger();
+        this.logger = logger.child({ API: this.constructor.name });
     }
 
     public execute(message: string) {
         this.logger.info("starting %s", this.execute.name);
-        let val = this.foo(message);
+        let val = this.addEverybody(message);
 
         return {
             body: JSON.stringify({ message: val }),
@@ -17,10 +17,11 @@ export default class LambdaHandler {
         };
     }
 
-    foo(message: string): string {
-        return this.logger.scope("Action", `${this.constructor.name}.${this.foo.name}`, () => {
-            this.logger.warn("this is me trying something new!");
-            return message + "s";
+    addEverybody(message: string): string {
+        this.logger.info("starting %s", this.addEverybody.name);
+        return this.logger.scope("Action", `${this.constructor.name}.${this.addEverybody.name}`, () => {
+            this.logger.info("this is me trying something new!");
+            return message + " Everybody!";
         });
     }
 }

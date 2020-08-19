@@ -17,21 +17,30 @@ provider:
   stage: dev
   versionFunctions: false
   environment:
+    # Sets the log level
     LOG_LEVEL: info
 
 functions:
-  stdLogger:
-    name: test-lambda-${self:provider.stage}
+  example-one:
+    name: example-one-${self:provider.stage}
     events:
       - http:
           method: get
           path: test-handler
-    handler: dist/handler.stdLogger
+    handler: dist/handler.exampleOne
 
-  otherLogger:
-    name: test-lambda2-${self:provider.stage}
+  example-two:
+    name: example-two-${self:provider.stage}
     events:
       - http:
           method: get
           path: test-handler-two
-    handler: dist/handler.otherLogger
+    handler: dist/handler.exampleTwo
+
+  example-three:
+    name: example-three-${self:provider.stage}
+    events:
+      - http:
+          method: get
+          path: test-handler-three
+    handler: dist/handler.exampleThree
